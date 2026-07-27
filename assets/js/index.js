@@ -4,11 +4,19 @@ var navLinks = document.querySelectorAll(".nav-links a");
 var settingsToggle = document.querySelector("#settings-toggle")
 var settingsSideBar = document.querySelector("#settings-sidebar")
 var themeColorsGrid= document.querySelector("#theme-colors-grid")
-var fontSetting = document.querySelector("#fontSetting")
+var fontSetting = document.querySelector("#fontSetting");
 var resetSettings= document.querySelector("#reset-settings")
 var FontButtons = fontSetting.querySelectorAll(".font-option")
 var ColorButtons = themeColorsGrid.querySelectorAll("button");
+var scrollToTop= document.querySelector("#scroll-to-top");
 
+
+scrollToTop.addEventListener("click",function(){
+    scrollTo({
+    top: 0,
+    behavior: "smooth",
+    })
+})
 
 window.addEventListener("scroll", function () {
   var currentSection = "";
@@ -17,8 +25,29 @@ window.addEventListener("scroll", function () {
     if (window.scrollY >= section.offsetTop - 200) {
       currentSection = section.id;
     }
+
   });
 
+    if(currentSection != "hero-section"){
+        scrollToTop.classList.remove(
+            "invisible",
+            "opacity-0"
+
+        )
+        scrollToTop.classList.add(
+            "visible",
+            "opacity-100"
+        )
+    }else{
+        scrollToTop.classList.add(
+            "invisible",
+            "opacity-0" 
+        )
+        scrollToTop.classList.remove(
+            "visible",
+            "opacity-100"
+        )
+    }
   navLinks.forEach(function (link) {
     link.classList.remove("active");
 
@@ -114,8 +143,6 @@ button.classList.add(
 )
 })
 
-
-
 //-------------- Reset Settings Buttons------//
 resetSettings.addEventListener("click",function(e){
 var tajawalFont = document.querySelector("#fontSetting .main-font")
@@ -156,6 +183,7 @@ tajawalFont.classList.remove(
       "dark:ring-offset-slate-900"
     );
   });
+
 mainColor.classList.add(
     "ring-2",
     "ring-primary",
