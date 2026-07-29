@@ -11,8 +11,12 @@ var ColorButtons = themeColorsGrid.querySelectorAll("button");
 var scrollToTop = document.querySelector("#scroll-to-top");
 var portfolioFilters = document.querySelector("#portfolio-filters")
 var portfolioGrid = document.querySelector("#portfolio-grid")
-
-
+var testimonialsCarousel = document.querySelector("#testimonials-carousel")
+var nextTestimonial = document.querySelector("#next-testimonial")
+var prevTestimonial = document.querySelector("#prev-testimonial")
+var carouselIndicators = document.querySelectorAll(".carousel-indicator")
+var currentTestimonial = 0;
+var testimonialCards = document.querySelectorAll(".testimonial-card");
 
 //  ------------- Scroll Feature -------- //
 scrollToTop.addEventListener("click", function () {
@@ -268,4 +272,57 @@ switch (e.target.getAttribute("data-filter")){
 })
 
 
+//----------Testimonials Section -------//
 
+
+
+function updateCarousel(index) {
+  var visibleCards = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+  var maxIndex = testimonialCards.length - visibleCards;
+
+  if (index < 0) {
+    currentTestimonial = maxIndex;
+  } else if (index > maxIndex) {
+    currentTestimonial = 0;
+  } else {
+    currentTestimonial = index;
+  }
+
+  var cardWidth = testimonialCards[0].offsetWidth;
+  testimonialsCarousel.style.transform = "translateX(" + currentTestimonial * cardWidth + "px)";
+
+  carouselIndicators.forEach(function (indicator) {
+    indicator.classList.remove("bg-accent");
+    indicator.classList.add("bg-slate-400", "dark:bg-slate-600");
+    indicator.setAttribute("aria-selected", "false");
+  });
+
+  if (carouselIndicators[currentTestimonial]) {
+    carouselIndicators[currentTestimonial].classList.add("bg-accent");
+    carouselIndicators[currentTestimonial].classList.remove("bg-slate-400", "dark:bg-slate-600");
+    carouselIndicators[currentTestimonial].setAttribute("aria-selected", "true");
+  }
+}
+
+nextTestimonial.addEventListener("click", function () {
+  updateCarousel(currentTestimonial + 1);
+});
+
+prevTestimonial.addEventListener("click", function () {
+  updateCarousel(currentTestimonial - 1);
+});
+
+carouselIndicators.forEach(function (indicator) {
+  indicator.addEventListener("click", function () {
+    updateCarousel(Number(indicator.getAttribute("data-index")));
+  });
+});
+
+window.addEventListener("resize", function () {
+  updateCarousel(currentTestimonial);
+});
+
+
+
+
+console.log("All features initialized successfully!")
